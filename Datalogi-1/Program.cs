@@ -12,10 +12,21 @@ for (int i = 0; i < 5; i++)
 {
     Övning1b();
 }*/
-for(int i=0; i < 5; i++)
+/*for(int i=0; i < 5; i++)
 {
     Övning3();
-}
+}*/
+MyLinkedList<string> lista = new MyLinkedList<string>();
+lista.Push("äpple");
+lista.Push("päron");
+lista.Push("banan");
+lista.Reset();
+Console.WriteLine(lista.Current.Data);
+lista.Next();
+Console.WriteLine(lista.Current.Data);
+lista.Next();
+Console.WriteLine(lista.Current.Data);
+
 
 static void Övning1a()
 {
@@ -77,9 +88,8 @@ static void Övning2() {
     timer.Stop();
     Console.WriteLine("2b Elapsed time: " + timer.ElapsedMilliseconds);
 }
-static void Övning3()
+static void Övning3(int count=72000)
 {
-    const int count = 72000;
     Stopwatch timer = Stopwatch.StartNew();
     MyLinkedList<double> list = new();
     Random random = new Random();

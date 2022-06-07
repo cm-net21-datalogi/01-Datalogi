@@ -9,12 +9,25 @@ namespace Datalogi_1
     public class MyLinkedList<T>
     {
         private MyNode<T>? Head = null;
-        // lägg till Current
+        public MyNode<T>? Current = null;
+
+        public void Next() {
+            Current = Current.Next;
+        }
+        public void Reset()
+        {
+            Current = Head;
+        }
+
         public void Push(T value) {
             MyNode<T> oldHead = Head;
             this.Head = new MyNode<T>();
             this.Head.Data = value;
             this.Head.Next = oldHead;
+            if(Current == null)
+            {
+                Current = Head;
+            }
         }
 
         public T Get(int index) {
