@@ -16,15 +16,21 @@ namespace Datalogi_1
 		// Lägga till en ny nod överst i stacken
 		public void Push(T value)
 		{
+			var oldTop = Top;
 			Top = new MyNode<T>();
 			Top.Data = value;
-			// TODO: vad gör vi om stacken inte är tom?
+			if(Top != null)
+			{
+				Top.Next = oldTop;
+			}
 		}
 		// Returnera värdet i den nod som är överst i stacken
-		// Om stacken är tom - vad gör vi då???
 		public T Peek()
 		{
-			// TODO: vad ska vi göra om listan är tom?
+			if (Top == null)
+			{
+				throw new Exception("Stacken är tom. Det finns inget värde att se.");
+			}
 			return Top.Data;
 		}
 		// Ta bort den översta noden i stacken. Nu blir den näst översta noden den nya toppnoden.
@@ -35,7 +41,7 @@ namespace Datalogi_1
 			// 2. stacken har minst en nod
 			if (Top == null)
 			{
-				throw new Exception("TODO: Berätta vad som har gått fel");
+				throw new Exception("Stacken är tom. Det finns inget värde att poppa.");
 			}
 			else
 			{
