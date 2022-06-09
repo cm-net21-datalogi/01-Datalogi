@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Datalogi_1
 {
-	public class MyStack<T> : SimpleStack<T>
+	public class MyStack<T> : SimpleStack<T>, SimpleQueue<T>
 	{
 		// översta noden i stacken
 		// Vi använder MyNode för att kunna ha både datan, och en referens till nästa nod i stacken
 		// Stacken är tom från början, översta noden är NULL
-		private MyNode<T> Top = null;
+		private MyNode<T> Top = null;  // motsvarar "first"
+		private MyNode<T> Last = null;  // motsvarar "bottom"
 
 		// Lägga till en ny nod överst i stacken
 		public void Push(T value)
@@ -22,6 +23,9 @@ namespace Datalogi_1
 			if(Top != null)
 			{
 				Top.Next = oldTop;
+			}else
+			{
+				Last = Top;
 			}
 		}
 		// Returnera värdet i den nod som är överst i stacken
@@ -53,6 +57,31 @@ namespace Datalogi_1
 				return value;
 			}
 		}
+
+		public void AddLast(T value)
+		{
+			if(Last == null)
+			{
+				Push(value);
+			} else
+			{
+				var oldLast = Last;
+				Last = new MyNode<T>();
+				Last.Data = value;
+				oldLast.Next = Last;
+			}
+		}
+
+		public T GetFirst()
+		{
+			// Top == First
+			return Peek();
+		}
+
+		public void RemoveFirst()
+		{
+			Pop();
+		}
 	}
 	// Vi behöver spara både datan och en referens till nästa nod, vi använder MyNode för det
 	/*public class MyNode<T>
@@ -67,6 +96,13 @@ namespace Datalogi_1
 		public void Push(T value);  // lägg till värde överst i stacken
 		public T Pop();  // ta bort översta värdet från stacken
 		public T Peek();  // titta på översta värdet i stacken
+	}
+	// Top == First
+	public interface SimpleQueue<T>
+	{
+		public void AddLast(T value);
+		public T GetFirst();
+		public void RemoveFirst();
 	}
 
 }
