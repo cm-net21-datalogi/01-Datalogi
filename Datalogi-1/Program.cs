@@ -16,16 +16,57 @@ for (int i = 0; i < 5; i++)
 {
     Övning3();
 }*/
-MyLinkedList<string> lista = new MyLinkedList<string>();
-lista.Push("äpple");
-lista.Push("päron");
-lista.Push("banan");
-lista.Reset();
-Console.WriteLine(lista.Current.Data);
-lista.Next();
-Console.WriteLine(lista.Current.Data);
-lista.Next();
-Console.WriteLine(lista.Current.Data);
+
+TestStack();
+
+static void TestStack()
+{
+    MyStack<int> stack = new MyStack<int>();
+    Console.WriteLine("Stacken är tom, length==" + stack.Length());
+    stack.AddLast(10);
+    Console.WriteLine("Stacken har 1 nod, length==" + stack.Length());
+
+    stack.AddLast(11);
+    stack.AddLast(12);
+    stack.AddLast(13);
+    Console.WriteLine("Stacken har 4 noder, length==" + stack.Length());
+    stack.AddLast(14);
+    stack.AddLast(15);
+    stack.AddLast(16);
+    Console.WriteLine("Stacken har 7 noder, length==" + stack.Length());
+
+    stack.RemoveAt(2);  // ta bort 12
+    stack.RemoveFirst();  // ta bort 10
+    stack.RemoveLast();  // ta bort 16
+    Console.WriteLine("Stacken har 4 noder, length==" + stack.Length());
+
+    stack.Print();
+
+    Console.WriteLine("stack.getAt(1) == " + stack.GetAt(1));
+    stack.SetAt(1, 110);
+    Console.WriteLine("stack.getAt(1) == " + stack.GetAt(1));
+
+    Console.WriteLine("Och nu baklänges!");
+    stack.PrintReverse();
+}
+
+
+
+
+
+static void TestLinkedList()
+{
+    MyLinkedList<string> lista = new MyLinkedList<string>();
+    lista.Push("äpple");
+    lista.Push("päron");
+    lista.Push("banan");
+    lista.Reset();
+    Console.WriteLine(lista.Current.Data);
+    lista.Next();
+    Console.WriteLine(lista.Current.Data);
+    lista.Next();
+    Console.WriteLine(lista.Current.Data);
+}
 
 
 static void Övning1a()

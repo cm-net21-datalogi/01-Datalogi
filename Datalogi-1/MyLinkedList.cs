@@ -39,9 +39,5 @@ namespace Datalogi_1
             return nodeReference.Data;
         }
     }
-    public class MyNode<T>
-    {
-        public T Data { get; set; }
-        public MyNode<T> Next { get; set; }
-    }
+
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datalogi_1
 {
-	public class MyStack<T> : SimpleStack<T>, SimpleQueue<T>
+	public class MyStack<T> : ISimpleStack<T>, ISimpleQueue<T>
 	{
 		// översta noden i stacken
 		// Vi använder MyNode för att kunna ha både datan, och en referens till nästa nod i stacken
@@ -14,19 +14,62 @@ namespace Datalogi_1
 		private MyNode<T> Top = null;  // motsvarar "first"
 		private MyNode<T> Last = null;  // motsvarar "bottom"
 
+		private int length = 0;
+
+		public int Length()
+		{
+			return length;
+		}
+
+		public void Print()
+		{
+			if (Top == null)
+			{
+				Console.WriteLine("Stacken är tom");
+				return;
+			}
+			var node = Top;
+			while (node != null)
+			{
+				// skriv ut
+				// gå till nästa
+				Console.WriteLine(node.Data);
+				node = node.Next;
+			}
+		}
+		public void PrintReverse()
+		{
+			if (Top == null)
+			{
+				Console.WriteLine("Stacken är tom");
+				return;
+			}
+			var node = Last;
+			while (node != null)
+			{
+				// skriv ut
+				// gå till föregående
+				Console.WriteLine(node.Data);
+				node = node.Previous;
+			}
+		}
+
 		// Lägga till en ny nod överst i stacken
 		public void Push(T value)
 		{
 			var oldTop = Top;
 			Top = new MyNode<T>();
 			Top.Data = value;
-			if(Top != null)
-			{
-				Top.Next = oldTop;
-			}else
+			Top.Next = oldTop;
+			if(oldTop == null)
 			{
 				Last = Top;
 			}
+			else
+			{
+				oldTop.Previous = Top;
+			}
+			length++;
 		}
 		// Returnera värdet i den nod som är överst i stacken
 		public T Peek()
@@ -53,6 +96,12 @@ namespace Datalogi_1
 				T value = Top.Data;
 				// Ändra så att Top pekar på nästa nod. Då kommer den första noden att tas bort av garbage collector
 				Top = Top.Next;
+				if (Top != null)
+				{
+					Top.Previous = null;
+					// Det finns förmodligen en bug här!
+				}
+				length--;
 				// Returnera värdet som tidigare toppnoden hade
 				return value;
 			}
@@ -60,16 +109,24 @@ namespace Datalogi_1
 
 		public void AddLast(T value)
 		{
-			if(Last == null)
+			//Console.WriteLine("AddLast 1, " + length);
+			if (Last == null)
 			{
 				Push(value);
-			} else
+				//Console.WriteLine("AddLast 2a, " + length);
+			}
+			else
 			{
 				var oldLast = Last;
 				Last = new MyNode<T>();
 				Last.Data = value;
 				oldLast.Next = Last;
+				Last.Previous = oldLast;
+				//Console.WriteLine("AddLast 2b, " + length);
+				length++;
 			}
+			//Console.WriteLine("AddLast 4, " + length);
+
 		}
 
 		public T GetFirst()
@@ -78,9 +135,57 @@ namespace Datalogi_1
 			return Peek();
 		}
 
-		public void RemoveFirst()
+		public T GetAt(int index)
+		{
+			if (index < 0) throw new Exception("Felaktigt index");
+
+			// GetAt är samma sak som: array[index]
+			var node = Top;
+			while(index > 0 && node != null)
+			{
+				node = node.Next;
+				index--;
+			}
+			if (node == null)
+				throw new Exception("Index utanför stacken");
+
+			return node.Data;
+		}
+
+		public void SetAt(int index, T value)
+		{
+			if (index < 0) throw new Exception("Felaktigt index");
+
+			// SetAt är samma som: array[index] = value
+			var node = Top;
+			while (index > 0 && node != null)
+			{
+				node = node.Next;
+				index--;
+			}
+			if (node == null)
+				throw new Exception("Index utanför stacken");
+
+			node.Data = value;
+		}
+
+		public void RemoveLast()
 		{
 			Pop();
+		}
+		public void RemoveFirst()
+		{
+			if (Top == null)
+			{
+				throw new Exception("Stacken är tom, kan inte ta bort första noden.");
+			}
+			var node = Top;
+			while(node.Next.Next != null)
+			{
+				node = node.Next;
+			}
+			node.Next = null;
+			length--;
 		}
 
 		public void RemoveAt(int index)
@@ -131,8 +236,14 @@ namespace Datalogi_1
 				{
 					throw new Exception("Kan inte ta bort, stacken har inte så många element.");
 				}
-				node.Next = node.Next.Next;
+				var node1 = node;
+				//var nodeToRemove = node.Next;
+				var node3 = node.Next.Next;
+				node1.Next = node3;
+				node3.Previous = node1;
 			}
+
+			length--;
 			// index 0 är första noden
 			// index 1 är andra noden
 			// osv...
@@ -142,27 +253,6 @@ namespace Datalogi_1
 			RemoveAt(0);  // kanske inte ens finns 1
 			RemoveAt(-1); // aldrig okej */
 		}
-	}
-	// Vi behöver spara både datan och en referens till nästa nod, vi använder MyNode för det
-	/*public class MyNode<T>
-	{
-		public T Data { get; set; }
-		public MyNode<T> Next { get; set; }
-	}*/
-
-	// Dessa metoder måste vår datastruktur implementera för att få lov att kalla sig för stack
-	public interface SimpleStack<T>
-	{
-		public void Push(T value);  // lägg till värde överst i stacken
-		public T Pop();  // ta bort översta värdet från stacken
-		public T Peek();  // titta på översta värdet i stacken
-	}
-	// Top == First
-	public interface SimpleQueue<T>
-	{
-		public void AddLast(T value);
-		public T GetFirst();
-		public void RemoveFirst();
 	}
 
 }
