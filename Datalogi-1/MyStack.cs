@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Datalogi_1
 {
-	public class MyStack<T> : ISimpleStack<T>, ISimpleQueue<T>
+	public class MyStack<T> : ISimpleStack<T>, ISimpleQueue<T> where T : class
 	{
 		// översta noden i stacken
 		// Vi använder MyNode för att kunna ha både datan, och en referens till nästa nod i stacken
@@ -127,6 +127,22 @@ namespace Datalogi_1
 			}
 			//Console.WriteLine("AddLast 4, " + length);
 
+		}
+
+
+		public int IndexOf(T value)
+		{
+			int index = 0;
+			var node = Top;
+			while(node != null)
+			{
+				if (node.Data == value)
+					return index;
+
+				node = node.Next;
+				index++;
+			}
+			throw new Exception("Värdet finns inte i stacken");
 		}
 
 		public T GetFirst()
@@ -252,6 +268,18 @@ namespace Datalogi_1
 			RemoveAt(1);  // kanske inte finns 2
 			RemoveAt(0);  // kanske inte ens finns 1
 			RemoveAt(-1); // aldrig okej */
+		}
+
+
+		public void ForEach(Action<T> withEach)
+		{
+			// withEach är en funktion som kommer att anropas med varje värde i stacken
+			var node = Top;
+			while (node != null)
+			{
+				withEach(node.Data);
+				node = node.Next;
+			}
 		}
 	}
 

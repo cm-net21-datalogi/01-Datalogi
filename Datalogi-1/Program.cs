@@ -17,11 +17,28 @@ for (int i = 0; i < 5; i++)
     Övning3();
 }*/
 
-TestStack();
+//TestStack();
+
+static void TestForEach()
+{
+    MyStack<string> stack = new MyStack<string>();
+    stack.AddLast("apple");
+    stack.AddLast("orange");
+    stack.AddLast("pear");
+    stack.AddLast("grape");
+    stack.AddLast("banana");
+
+    stack.ForEach((x) => Console.WriteLine(x));
+
+    string concat = "";
+    stack.ForEach((x) => concat += x + ", ");
+    Console.WriteLine(concat);
+}
+TestForEach();
 
 static void TestStack()
 {
-    MyStack<int> stack = new MyStack<int>();
+    MyStack<object> stack = new MyStack<object>();
     Console.WriteLine("Stacken är tom, length==" + stack.Length());
     stack.AddLast(10);
     Console.WriteLine("Stacken har 1 nod, length==" + stack.Length());
@@ -31,7 +48,7 @@ static void TestStack()
     stack.AddLast(13);
     Console.WriteLine("Stacken har 4 noder, length==" + stack.Length());
     stack.AddLast(14);
-    stack.AddLast(15);
+    stack.AddLast("15");
     stack.AddLast(16);
     Console.WriteLine("Stacken har 7 noder, length==" + stack.Length());
 
@@ -48,6 +65,16 @@ static void TestStack()
 
     Console.WriteLine("Och nu baklänges!");
     stack.PrintReverse();
+
+    Console.WriteLine("Hittade 15 på index == " + stack.IndexOf("15"));
+	try
+	{
+        Console.WriteLine("Hittade 150 på index == " + stack.IndexOf(150));
+	}
+	catch (Exception)
+	{
+		Console.WriteLine("150 fanns inte i stacken.");
+	}
 }
 
 
