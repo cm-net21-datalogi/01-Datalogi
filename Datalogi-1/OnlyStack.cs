@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Datalogi_1
 {
-	public class OnlyStack<T> : ISimpleStack<T>
+	// T   - helt allmän
+	// where T : class  - referenstyp (objects)
+	// where T : struct - värdetyp (int osv.)
+	public class OnlyStack<T> : ISimpleStack<T> where T:struct
 	{
 		private MyNode<T>? Head = null;
 		public T Peek()
@@ -33,5 +36,31 @@ namespace Datalogi_1
 			Head.Data = value;
 			Head.Next = oldHead;
 		}
+
+		public bool Exists(Predicate<T> condition) {
+			if (Head == null)
+				return false; //throw new Exception("Stacken är tom");
+
+			var node = Head;
+			while(node != null)
+			{
+				bool result = condition(node.Data);
+				if (result) return true;  // node.Data om vi arbetar med en referenstyp
+				node = node.Next;
+			}
+			return false; //throw new Exception("Värdet finns inte i stacken");
+		}
+		public bool ExistsRecursive(Predicate<T> condition)
+		{
+			return ExistsInRestOfStack(Head, condition);
+		}
+		private static bool ExistsInRestOfStack(MyNode<T>? node, Predicate<T> condition) {
+			if (node == null) return false;
+
+			if (condition(node.Data)) return true;
+
+			return ExistsInRestOfStack(node.Next, condition);
+		}
+
 	}
 }

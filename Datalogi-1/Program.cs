@@ -1,8 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
-using Datalogi_1;
+﻿using Datalogi_1;
 using System.Diagnostics;
 
-Console.WriteLine("Hello, World!");
 
 /*for (int i = 0; i < 5; i++)
 {
@@ -34,7 +32,7 @@ static void TestForEach()
     stack.ForEach((x) => concat += x + ", ");
     Console.WriteLine(concat);
 }
-TestForEach();
+//TestForEach();
 
 static void TestStack()
 {
@@ -177,3 +175,30 @@ static void Övning3(int count=72000)
     timer.Stop();
     Console.WriteLine("3b Elapsed time: " + timer.ElapsedMilliseconds);
 }
+
+
+static void TestFind()
+{
+    OnlyStack<int> stack = new OnlyStack<int>();
+    stack.Push(5);
+    stack.Push(4);
+    stack.Push(2);
+    stack.Push(5);
+    stack.Push(12);
+    stack.Push(50);
+	Console.WriteLine("Letar efter värdet 12 i stacken...");
+    try
+    {
+        int? maybe = stack.Find(element => element == 12);
+        Console.WriteLine("Hittade " + maybe);
+
+        maybe = stack.Find(element => element == 13);
+        Console.WriteLine("Hittade " + maybe);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine("Hittade inget element. Felmeddelande: " + e.Message);
+    }
+}
+
+TestFind();
