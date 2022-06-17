@@ -9,7 +9,7 @@ namespace Datalogi_1
 	// bara T   <- helt allmän generisk datatyp
 	// where T : class  <- referenstyp (objects)
 	// where T : struct <- värdetyp (int osv.)
-	public class OnlyStack<T> : ISimpleStack<T> where T:struct
+	public class ObjectStack<T> : ISimpleStack<T> where T:class
 	{
 		private MyNode<T>? Head = null;
 		public T Peek()
@@ -37,35 +37,19 @@ namespace Datalogi_1
 			Head.Next = oldHead;
 		}
 
-
-		public int existsLoopCounter;
-		public bool Exists(Predicate<T> condition) {
-			existsLoopCounter = 0;
-			// T är en värdetyp
+		public T? Find(Predicate<T> condition) {
+			// T är ett objekt
 			if (Head == null)
-				return false;
+				return null;
 
 			var node = Head;
 			while(node != null)
 			{
-				existsLoopCounter++;
 				bool result = condition(node.Data);
-				if (result) return true;
+				if (result) return node.Data;
 				node = node.Next;
 			}
-			return false;
+			return null;
 		}
-		public bool ExistsRecursive(Predicate<T> condition)
-		{
-			return ExistsInRestOfStack(Head, condition);
-		}
-		private static bool ExistsInRestOfStack(MyNode<T>? node, Predicate<T> condition) {
-			if (node == null) return false;
-
-			if (condition(node.Data)) return true;
-
-			return ExistsInRestOfStack(node.Next, condition);
-		}
-
 	}
 }

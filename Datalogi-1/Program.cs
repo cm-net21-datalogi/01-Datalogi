@@ -176,7 +176,7 @@ static void Övning3(int count=72000)
     Console.WriteLine("3b Elapsed time: " + timer.ElapsedMilliseconds);
 }
 
-
+/*
 static void TestFind()
 {
     OnlyStack<int> stack = new OnlyStack<int>();
@@ -202,3 +202,26 @@ static void TestFind()
 }
 
 TestFind();
+*/
+
+static void TestExists()
+{
+    OnlyStack<int> stack = new OnlyStack<int>();
+    Random r = new Random();
+
+    for(int i=0;i<100; i++)
+	{
+        stack.Push(r.Next(1, 101));
+	}
+
+    // Kör Exists några gånger utan att ha sorterat
+    for(int i=0; i<10; i++)
+	{
+        int x = r.Next(1, 101);
+        stack.Exists(num => num == x);
+        int count = stack.existsLoopCounter;
+		Console.WriteLine("Antal varv i loopen: " + count);
+	}
+}
+TestExists();
+
