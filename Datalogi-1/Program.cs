@@ -209,19 +209,45 @@ static void TestExists()
     OnlyStack<int> stack = new OnlyStack<int>();
     Random r = new Random();
 
-    for(int i=0;i<100; i++)
+    for(int i=0;i<1000; i++)
 	{
-        stack.Push(r.Next(1, 101));
+        stack.Push(r.Next(1, 1001));
 	}
 
-    // Kör Exists några gånger utan att ha sorterat
-    for(int i=0; i<10; i++)
+	// Kör Exists några gånger utan att ha sorterat
+	Console.WriteLine("Utan sortering:");
+    for(int i=0; i<12; i++)
 	{
-        int x = r.Next(1, 101);
+        int x = r.Next(1, 1001);
         stack.Exists(num => num == x);
         int count = stack.existsLoopCounter;
 		Console.WriteLine("Antal varv i loopen: " + count);
 	}
 }
 TestExists();
+
+static void TestExistsSorted()
+{
+    const int ARRAY_LENGTH = 1000;
+    int[] array = new int[ARRAY_LENGTH];
+    Random r = new Random();
+
+    for (int i = 0; i < array.Length; i++)
+    {
+        array[i] = r.Next(1, ARRAY_LENGTH + 1);
+    }
+
+    Array.Sort(array);
+
+    // Kör Exists några gånger efter sortering
+    Console.WriteLine("Med srotering:");
+    for (int i = 0; i < 12; i++)
+    {
+        int x = r.Next(1, ARRAY_LENGTH + 1);
+        bool result = Sort.ExistsInSorted(array, x);
+        int count = Sort.existsInSortedLoopCounter;
+        Console.WriteLine("Antal varv i loopen: " + count);
+    }
+}
+TestExistsSorted();
 
