@@ -19,7 +19,7 @@ namespace Datalogi_1
             // Upprepa!
             existsInSortedLoopCounter = 0;
 
-            int low = 0, high = array.Length;
+            int low = 0, high = array.Length - 1;
             while( high > low )
 			{
                 existsInSortedLoopCounter++;
@@ -38,6 +38,32 @@ namespace Datalogi_1
 				}
 			}
             return false;
+        }
+
+        public static T? FindInSorted<T>(T[] array, T target) where T : class, IComparable<T>
+        {
+            existsInSortedLoopCounter = 0;
+
+            int low = 0, high = array.Length - 1;
+            while (high > low)
+            {
+                existsInSortedLoopCounter++;
+                int mid = (low + high) / 2;
+                int compare = array[mid].CompareTo(target);
+                if (compare==0)
+                {
+                    return array[mid];
+                }
+                else if (compare < 0)
+                {
+                    low = mid + 1;
+                }
+                else  // compare
+                {
+                    high = mid - 1;
+                }
+            }
+            return null;
         }
     }
 }

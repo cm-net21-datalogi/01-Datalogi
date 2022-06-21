@@ -275,9 +275,30 @@ static void TestObjectStackFind()
 }
 TestObjectStackFind();
 
-class Product
+static void TestFindInSortedGenericArray()
 {
-    public int Id { get; set; }
-    // riktiga produkter innehåller många fler egenskaper
-    // vi behöver bara produkt-id för att testa find-funktionen
+    const int ARRAY_LENGTH = 1000;
+    Product[] array = new Product[ARRAY_LENGTH];
+    Random r = new Random();
+
+    for (int i = 0; i < array.Length; i++)
+    {
+        Product p = new Product();
+        p.Id = r.Next(1, ARRAY_LENGTH + 1);
+        array[i] = p;
+    }
+
+    Array.Sort(array);  // går att sortera pga IComparable<Product>
+
+    // Kör Exists några gånger efter sortering
+    Console.WriteLine("Med sortering:");
+    for (int i = 0; i < 12; i++)
+    {
+        Product target = new Product();
+        target.Id = r.Next(1, ARRAY_LENGTH + 1);
+        Product? maybeFound = Sort.FindInSorted<Product>(array, target);
+        int count = Sort.existsInSortedLoopCounter;
+        Console.WriteLine("Antal varv i loopen: " + count);
+    }
 }
+TestFindInSortedGenericArray();
