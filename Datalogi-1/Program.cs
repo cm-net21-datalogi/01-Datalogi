@@ -240,7 +240,7 @@ static void TestExistsSorted()
     Array.Sort(array);
 
     // Kör Exists några gånger efter sortering
-    Console.WriteLine("Med srotering:");
+    Console.WriteLine("Med sortering:");
     for (int i = 0; i < 12; i++)
     {
         int x = r.Next(1, ARRAY_LENGTH + 1);
@@ -251,3 +251,33 @@ static void TestExistsSorted()
 }
 TestExistsSorted();
 
+static void TestObjectStackFind()
+{
+    ObjectStack<Product> stack = new ObjectStack<Product>();
+    const int NUM_PRODUCTS = 1000;
+    Random r = new Random();
+
+    for (int i = 0; i < NUM_PRODUCTS; i++)
+    {
+        Product p = new Product();
+        p.Id = r.Next(1, NUM_PRODUCTS+1);
+        stack.Push(p);
+    }
+
+	Console.WriteLine("Söka efter produkt med ett specifikt id - utan att sortera stacken:");
+    for(int i=0; i < 12; i++)
+	{
+        int targetId = r.Next(1, NUM_PRODUCTS + 1);
+        stack.Find(p => p.Id == targetId);
+        int counter = stack.loopCounter;
+		Console.WriteLine("Antal varv i loopen: " + counter);
+    }
+}
+TestObjectStackFind();
+
+class Product
+{
+    public int Id { get; set; }
+    // riktiga produkter innehåller många fler egenskaper
+    // vi behöver bara produkt-id för att testa find-funktionen
+}

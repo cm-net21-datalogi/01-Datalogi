@@ -37,19 +37,32 @@ namespace Datalogi_1
 			Head.Next = oldHead;
 		}
 
+
+		public int loopCounter;
 		public T? Find(Predicate<T> condition) {
-			// T är ett objekt
+			// kontrollera om stacken är tom
+			// iterera över alla element i stacken
+			// om något element uppfyller villkoret: returnera det
+			// räkna antalet varv i loopen
+			loopCounter = 0;
+
 			if (Head == null)
 				return null;
 
 			var node = Head;
-			while(node != null)
+			while (node != null)
 			{
+				loopCounter++;
+				// Predicate<T> är en anonym funktion
 				bool result = condition(node.Data);
-				if (result) return node.Data;
+				if (result)
+					return node.Data;
+
 				node = node.Next;
 			}
 			return null;
 		}
+
+		//public T? FindBinary(Predicate<T> condition) { }
 	}
 }
