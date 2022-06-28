@@ -301,4 +301,6 @@ static void TestFindInSortedGenericArray()
         Console.WriteLine("Antal varv i loopen: " + count);
     }
 }
-TestFindInSortedGenericArray();
+//TestFindInSortedGenericArray();
+
+Product.Demo2();

@@ -40,6 +40,7 @@ namespace Datalogi_1
             return false;
         }
 
+        //public static Product? FindInSorted(Product[] array, Product target) { }
         public static T? FindInSorted<T>(T[] array, T target) where T : class, IComparable<T>
         {
             existsInSortedLoopCounter = 0;
